@@ -8,6 +8,9 @@ export class PluginSettingsOutput {
     name: string;
     value: Record<string, any>;
     scheme?: PluginSchemaSettings | null;
+    description?: string | null;
+    enum?: any[] | null;
+    format?: string | null;
 
     static convertScheme(obj: PluginSettingsOutput): PluginSettingsOutput {
         // if obj.scheme is an empty object, set it to null

@@ -12,6 +12,7 @@ import {ContextRetrieverEndpoint} from "./endpoints/contextRetriever";
 import {ConversationEndpoint} from "./endpoints/conversation";
 import {CustomEndpoint} from "./endpoints/customEndpoint";
 import {EmbedderEndpoint} from "./endpoints/embedder";
+import {IngestionEndpoint} from "./endpoints/ingestion";
 import {LargeLanguageModelEndpoint} from "./endpoints/largeLanguageModel";
 import {MessageEndpoint} from "./endpoints/message";
 import {PluginsEndpoint} from "./endpoints/plugins";
@@ -96,6 +97,10 @@ export class GrinningCatClient implements Endpoints {
 
     public fileManager(): FileManagerEndpoint {
         return new FileManagerEndpoint(this);
+    }
+
+    public ingestion(): IngestionEndpoint {
+        return new IngestionEndpoint(this);
     }
 
     public largeLanguageModel(): LargeLanguageModelEndpoint {
