@@ -33,6 +33,48 @@ export class AuthEndpoint extends AbstractEndpoint {
     }
 
     /**
+     * Exchanges a refresh token for a new access token. The refresh token is rotated: the one returned here
+     * replaces it and must be used for the next refresh, since the submitted one is consumed and reusing it
+     * revokes the whole session.
+     *
+     * @param refreshToken The refresh token to exchange.
+     *
+     * @returns The new token pair.
+     */
+    async refresh(refreshToken: string): Promise<TokenOutput> {
+        const response = await this.client.getHttpClient().createHttpClient().post(
+            this.formatUrl("/refresh"),
+            {
+                json: {
+                    refresh_token: refreshToken,
+                },
+            },
+        );
+
+        const result = this.deserialize<TokenOutput>(response.data);
+
+        this.client.addToken(result.accessToken);
+
+        return result;
+    }
+
+    /**
+     * Revokes the session the refresh token belongs to. Already-issued access tokens stay valid until they expire.
+     *
+     * @param refreshToken The refresh token of the session to revoke.
+     */
+    async logout(refreshToken: string): Promise<void> {
+        await this.client.getHttpClient().createHttpClient().post(
+            this.formatUrl("/logout"),
+            {
+                json: {
+                    refresh_token: refreshToken,
+                },
+            },
+        );
+    }
+
+    /**
      * This endpoint is used to get a list of available permissions in the system. The permissions are used to define
      * the access rights of the users in the system. The permissions are defined by the system administrator.
      *

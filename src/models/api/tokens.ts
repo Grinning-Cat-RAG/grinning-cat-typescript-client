@@ -6,6 +6,15 @@ export class TokenOutput {
 
     @SerializedName("token_type")
     tokenType?: string | null = "Bearer";
+
+    @SerializedName("expires_in")
+    expiresIn?: number | null = null;
+
+    @SerializedName("refresh_token")
+    refreshToken?: string | null = null;
+
+    @SerializedName("refresh_expires_in")
+    refreshExpiresIn?: number | null = null;
 }
 
 export class User {

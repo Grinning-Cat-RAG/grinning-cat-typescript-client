@@ -33,6 +33,20 @@ const catClient = new GrinningCatClient(
     new HttpClient('grinning_cat_core', 1865, null)
 );
 ```
+
+Authenticate with a username and password (the client keeps the returned access token for the following calls),
+refresh it before it expires, and log out to revoke the session:
+
+```javascript
+const token = await catClient.auth().token("username", "password");
+// token.accessToken, token.expiresIn, token.refreshToken, token.refreshExpiresIn
+
+// before the access token expires, exchange the (single-use) refresh token for a new pair
+const refreshed = await catClient.auth().refresh(token.refreshToken);
+
+// revoke the session; already-issued access tokens stay valid until they expire
+await catClient.auth().logout(refreshed.refreshToken);
+```
 Send a message to the websocket:
 
 ```javascript
